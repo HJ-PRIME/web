@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* Centrar todo el contenido usando Flexbox */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Signika', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* Fondo degradado de color de azul a rojo */
+            background: linear-gradient(135deg, #ff6347, #1e90ff); /* Degradado de rojo anaranjado a azul */
+            color: #ffffff; /* Color blanco para el texto */
+            overflow: hidden;
+        }
+
+        /* Estilos para el encabezado */
+        header {
+            width: 100%;
+            background-color: #333; /* Fondo oscuro para el encabezado */
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+        }
+
+        .navbar nav ul li a {
+            text-decoration: none;
+            color: rgb(255, 255, 255); /* Color blanco para los enlaces */
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar nav ul li a:hover {
+            color: #f8f8f8; /* Color rojo anaranjado al pasar el mouse */
+        }
+
+        /* Sección de carga de archivos */
+        .upload-section {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #5c0000;
+            border-radius: 8px;
+        }
+
+        .file-list {
+            margin-top: 20px;
+            background-color: #580505;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .download-section {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #ff6347; /* Fondo rojo anaranjado */
+            border-radius: 8px;
+            color: rgb(116, 0, 0);
+        }
+
+        .download-section a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #c01111; /* Fondo blanco para el enlace */
+            color: #ff6347; /* Color rojo anaranjado para el texto */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-section a:hover {
+            background-color: #ff4500; /* Rojo más oscuro al pasar el mouse */
+            color: rgb(161, 8, 8);
+        }
+
+        /* Animación para los enlaces de descarga */
+        .file-move {
+            position: absolute;
+            font-size: 16px;
+            padding: 10px;
+            background-color: #ff6347;
+            color: rgb(158, 18, 18);
+            text-decoration: none;
+            border-radius: 5px;
+            animation: moveFile 5s infinite alternate;
+        }
+
+        @keyframes moveFile {
+            0% {
+                top: 10%;
+                left: 10%;
+            }
+            25% {
+                top: 50%;
+                left: 20%;
+            }
+            50% {
+                top: 30%;
+                left: 70%;
+            }
+            75% {
+                top: 80%;
+                left: 60%;
+            }
+            100% {
+                top: 60%;
+                left: 90%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="navbar container">
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#briefcase">Portafolio</a></li>
+                <li><a href="#about-me">Sobre mi</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section id="inicio">
+    <h1>Bienvenido a mi sitio web</h1>
+    <p>Aquí va el contenido de la sección de inicio...</p>
+</section>
+
+<section>
+    <div class="profile">
+        <div class="profile-img"><img src="./img/robotface.jpg" alt="Perfil"></div>
+        <div class="square-text">Artica Kenny</div>
+        <div class="square-text-2"><span>ING. DE SISTEMAS | WEB DEVELOPER</span></div>
+        
+        </div>
+        <div class="square-text-3"><a href="#about-me"><span>About me |</span> Sobre Mi</a></div>
+    </div>
+</section>
+
+<section id="briefcase">
+    <h1>Portafolio</h1>
+    <p>Aquí va el contenido del portafolio...</p>
+
+    <!-- Sección de carga de archivos -->
+    <div class="upload-section">
+        <h2>Cargar Documento</h2>
+        <p>Selecciona un archivo para cargarlo:</p>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Subir archivo</button>
+    </div>
+
+    <!-- Sección de descarga de archivo -->
+    <div class="download-section">
+        <h1>Descargar Documento</h1>
+        <p>Haz clic en el siguiente enlace para descargar el documento:</p>
+        <a id="downloadLink" href="#" download>Descargar Documento</a>
+    </div>
+</section>
+
+<script>
+    // Función para manejar la carga de archivos
+    function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0]; // Obtiene el primer archivo seleccionado
+
+        if (file) {
+            const downloadLink = document.getElementById('downloadLink');
+            const fileList = document.createElement('a');
+            
+            // Crea una URL temporal para el archivo cargado
+            const fileURL = URL.createObjectURL(file);
+            
+            // Asigna el enlace de descarga para el archivo subido
+            fileList.href = fileURL;
+            fileList.textContent = "Descargar " + file.name;
+            fileList.classList.add('file-move'); // Añade la clase para movimiento
+            fileList.download = file.name;
+
+            // Añade el enlace con el movimiento a la página
+            document.body.appendChild(fileList);
+        } else {
+            alert("Por favor, selecciona un archivo primero.");
+        }
+    }
+</script>
+
+<section id="about-me">
+    <h1>Sobre mí</h1>
+    <p>¡Hola! Soy Artica Pariona Kenni, un apasionado por la tecnología y la innovación. 
+        Desde que era muy joven, siempre tuve una fascinación por entender cómo funcionan 
+        las cosas a mi alrededor y, con el tiempo, esta curiosidad se transformó en una pasión 
+        por el desarrollo y la creación digital.
+        Mi viaje comenzó con un interés profundo en la robótica y la programación. 
+        Desde que era niño, me encantaba desmontar y armar dispositivos electrónicos, tratando de 
+        comprender sus mecanismos internos. Esta pasión me llevó a estudiar Ingeniería en 
+        Robótica, lo que me permitió adquirir una comprensión sólida de las tecnologías emergentes
+         y cómo podemos utilizarlas para resolver problemas reales.
+        A lo largo de mi carrera, he trabajado en una variedad de proyectos, desde el diseño de sistemas automatizados hasta el desarrollo de aplicaciones web. </p>
+</section>
+
+</body>
+</html>
+
+
+
+
+
+
